@@ -74,7 +74,7 @@ function Register(props) {
                         {props.title}
                     </button>
                     <p className="register__text">Already a member?
-                        <Link to='/signin' className='register__links'> {props.link} </Link>
+                        <Link to='/signin' className='register__link'> {props.link} </Link>
                         here!
                     </p>
                 </div>
