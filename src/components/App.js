@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Routes, Route, useHistory } from 'react-router-dom';
 import '../index.css';
 import ProtectedRoute from './ProtectedRoute';
 import logo from '../images/header-logo.svg';
@@ -83,7 +83,7 @@ function App() {
 
     <div className='page'>
 
-      <Switch>
+      <Routes>
         <ProtectedRoute
         exact path='/'
         >
@@ -149,7 +149,7 @@ function App() {
           />
 
         </ProtectedRoute>
-      </Switch>
+      </Routes>
 
     </div>
 

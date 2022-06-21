@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Navigate } from 'react-router-dom';
 
 // =====>
 function ProtectedRoute({ children, ...props }) {
@@ -8,7 +8,7 @@ function ProtectedRoute({ children, ...props }) {
             {
                 props.loggedIn
                 ? children
-                : <Redirect to='/signin' />
+                : <Navigate to='/signin' />
             }
         </Route>
     )
