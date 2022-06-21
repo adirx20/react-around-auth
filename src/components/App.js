@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import '../index.css';
+import ProtectedRoute from './ProtectedRoute';
 import logo from '../images/header-logo.svg';
 import api from '../utils/api';
 import Header from './Header';
