@@ -11,6 +11,9 @@ import Card from './Card';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
+import Register from './Register';
+import Login from './Login';
+import InfoTooltip from './InfoTooltip';
 
 // =====>
 function App() {
@@ -85,7 +88,7 @@ function App() {
 
       <Routes>
         <ProtectedRoute
-        exact path='/'
+          exact path='/'
         >
 
           <Header logo={logo} />
@@ -149,6 +152,40 @@ function App() {
           />
 
         </ProtectedRoute>
+
+        {/* <Route path='/signup'>
+          <Header
+            loggedIn={isLoggedIn}
+            logOut={handleSignOut}
+            user={userEmail}
+            buttonText='Log in'
+            url='/signin'
+          />
+          <Register
+            title="Sign up"
+            link="Log in"
+            loggedIn={isLoggedIn}
+            onSubmit={handleRegisterSubmit}
+            infoPopup={setInfoToolTipFaild}
+          />
+        </Route>
+        <Route path='/signin'>
+          <Header
+            loggedIn={isLoggedIn}
+            logOut={handleSignOut}
+            user={userEmail}
+            buttonText='Sign up'
+            url='/signup'
+          />
+          <Login
+            title="Log in"
+            link='Sign up'
+            loggedIn={setLoggedIn}
+            onSubmit={handleLoginSubmit}
+            infoPopup={setInfoToolTipFaild}
+          />
+        </Route> */}
+
       </Routes>
 
     </div>
