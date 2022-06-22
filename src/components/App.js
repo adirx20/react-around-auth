@@ -14,9 +14,13 @@ import ImagePopup from './ImagePopup';
 import Register from './Register';
 import Login from './Login';
 import InfoTooltip from './InfoTooltip';
+import * as auth from '../utils/auth';
 
 // =====>
 function App() {
+  // History
+  const history = useHistory();
+
   // Popups' state variables
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddCardPopupOpen, setIsAddCardPopupOpen] = React.useState(false);
@@ -76,6 +80,27 @@ function App() {
       .catch((err) => {
         console.log('error', err);
       })
+  }
+
+  function handleUserRegister(email, password) {
+    auth.register(email, password)
+    .then((res) => {
+      history.push('/signin');
+    })
+    .catch((err) => {
+      console.log(`Something is not working... Error: ${err}`);
+    });
+  }
+
+  function handleUserLogin(email, password) {
+    auth.login(email, password)
+    .then((res) => {
+      if (res.token) {
+        console.log('token: ', res.token);
+        setLoggedIn(true);
+        history.push('/');
+      }
+    })
   }
 
   // EVENT LISTENERS
@@ -153,27 +178,27 @@ function App() {
 
         </ProtectedRoute>
 
-        {/* <Route path='/signup'>
+        <Route path='/signup'>
           <Header
-            loggedIn={isLoggedIn}
-            logOut={handleSignOut}
-            user={userEmail}
+            // loggedIn={isLoggedIn}
+            // logOut={handleSignOut}
+            // user={userEmail}
             buttonText='Log in'
             url='/signin'
           />
           <Register
             title="Sign up"
             link="Log in"
-            loggedIn={isLoggedIn}
-            onSubmit={handleRegisterSubmit}
-            infoPopup={setInfoToolTipFaild}
+            // loggedIn={isLoggedIn}
+            // onSubmit={handleRegisterSubmit}
+            // infoPopup={setInfoToolTipFaild}
           />
         </Route>
         <Route path='/signin'>
           <Header
-            loggedIn={isLoggedIn}
-            logOut={handleSignOut}
-            user={userEmail}
+            // loggedIn={isLoggedIn}
+            // logOut={handleSignOut}
+            // user={userEmail}
             buttonText='Sign up'
             url='/signup'
           />
@@ -181,10 +206,10 @@ function App() {
             title="Log in"
             link='Sign up'
             loggedIn={setLoggedIn}
-            onSubmit={handleLoginSubmit}
-            infoPopup={setInfoToolTipFaild}
+            // onSubmit={handleLoginSubmit}
+            // infoPopup={setInfoToolTipFaild}
           />
-        </Route> */}
+        </Route>
 
       </Routes>
 

@@ -1,13 +1,13 @@
 export const BASE_URL = 'https://register.nomoreparties.co';
 
-export const register = (username, password, email) => {
+export const register = (email, password) => {
     return fetch(`${BASE_URL}/signup`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password, email })
+        body: JSON.stringify({ email, password }),
     })
         .then((res) => {
             if (res.status === 201) {
@@ -39,7 +39,7 @@ export const authorize = (identifier, password) => {
         .catch((err) => console.log(err));
 };
 
- export const getContent = (jwt) => {
+ export const getToken = (jwt) => {
     return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
         headers: {
