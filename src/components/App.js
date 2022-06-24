@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Routes, Route, useHistory } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import '../index.css';
 import ProtectedRoute from './ProtectedRoute';
 import logo from '../images/header-logo.svg';
@@ -13,13 +13,23 @@ import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import Register from './Register';
 import Login from './Login';
-import InfoTooltip from './InfoTooltip';
 import * as auth from '../utils/auth';
+import InfoTooltip from './InfoTooltip';
+import failedTipIcon from '../images/failed-tip-icon.svg';
+import successTipIcon from '../images/success-tip-icon.svg';
 
 // =====>
 function App() {
   // History
-  const history = useHistory();
+  const history = useNavigate();
+
+  // Icons
+
+  // Registration and login state variables
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   // Popups' state variables
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -28,13 +38,18 @@ function App() {
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
   const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = React.useState(false);
 
+  // Info tool tip state variables
+  const [isInfoTooltipSuccess, setIsInfoTooltipSuccess] = useState(false);
+  const [isInfoTooltipFailed, setIsInfoTooltipFailed] = useState(false);
+
   // Selected image state variable
   const [selectedImage, setSelectedImage] = React.useState({});
 
   // Auth state variables
   const [loggedIn, setLoggedIn] = React.useState(false);
 
-  // FUNCTIONS
+  // Functions
+  // Click handlres
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
   }
@@ -84,24 +99,24 @@ function App() {
 
   function handleUserRegister(email, password) {
     auth.register(email, password)
-    .then((res) => {
-      history.push('/signin');
-    })
-    .catch((err) => {
-      console.log(`Something is not working... Error: ${err}`);
-    });
+      .then((res) => {
+        history.push('/signin');
+      })
+      .catch((err) => {
+        console.log(`Something is not working... Error: ${err}`);
+      });
   }
 
-  function handleUserLogin(email, password) {
-    auth.login(email, password)
-    .then((res) => {
-      if (res.token) {
-        console.log('token: ', res.token);
-        setLoggedIn(true);
-        history.push('/');
-      }
-    })
-  }
+  // function handleUserLogin(email, password) {
+  //   auth.login(email, password)
+  //   .then((res) => {
+  //     if (res.token) {
+  //       console.log('token: ', res.token);
+  //       setLoggedIn(true);
+  //       history.push('/');
+  //     }
+  //   })
+  // }
 
   // EVENT LISTENERS
 
@@ -114,9 +129,12 @@ function App() {
       <Routes>
         <ProtectedRoute
           exact path='/'
+          loggedIn={loggedIn}
         >
 
-          <Header logo={logo} />
+          <Header
+            logo={logo}
+          />
 
           <Main
             onEditProfileClick={handleEditProfileClick}
@@ -181,24 +199,20 @@ function App() {
         <Route path='/signup'>
           <Header
             // loggedIn={isLoggedIn}
-            // logOut={handleSignOut}
-            // user={userEmail}
+            userEmail={email}
             buttonText='Log in'
             url='/signin'
           />
           <Register
             title="Sign up"
             link="Log in"
-            // loggedIn={isLoggedIn}
-            // onSubmit={handleRegisterSubmit}
-            // infoPopup={setInfoToolTipFaild}
+          // loggedIn={isLoggedIn}
+          // onSubmit={handleRegisterSubmit}
           />
         </Route>
         <Route path='/signin'>
           <Header
             // loggedIn={isLoggedIn}
-            // logOut={handleSignOut}
-            // user={userEmail}
             buttonText='Sign up'
             url='/signup'
           />
@@ -207,11 +221,26 @@ function App() {
             link='Sign up'
             loggedIn={setLoggedIn}
             // onSubmit={handleLoginSubmit}
-            // infoPopup={setInfoToolTipFaild}
           />
         </Route>
-
       </Routes>
+
+
+      <InfoTooltip
+        name='success-tip'
+        isOpen={isInfoTooltipSuccess}
+        onClose={closeAllPopups}
+        tipText='You are successfully registered to the site!'
+        tipIcon={successTipIcon}
+      />
+
+      <InfoTooltip
+        name='failed-tip'
+        isOpen={isInfoTooltipFailed}
+        onClose={closeAllPopups}
+        tipText='Something is not working... Please check your info and try again.'
+        tipIcon={failedTipIcon}
+      />
 
     </div>
 

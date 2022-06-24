@@ -49,6 +49,7 @@
 @import url('./blocks/form/__input-error-message/form__input-error-message.css');
 @import url('./blocks/form/__save-button/form__save-button.css');
 @import url('./blocks/form/__save-button/_disabled/form__save-button_disabled.css');
+@import url('./blocks/register/register.css');
 
 @keyframes popup-opacity {
     from {opacity: 0;}

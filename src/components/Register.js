@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // =====>
@@ -30,7 +30,7 @@ function Register(props) {
                         id='input-username'
                         type='username'
                         name='username'
-                        value={username}
+                        value={props.username}
                         onChange={(evt) => setUsername(evt.target.value)}
                         placeholder='Enter username...'
                         required
@@ -40,7 +40,7 @@ function Register(props) {
                         id='input-email'
                         type='email'
                         name='email'
-                        value={email}
+                        value={props.userEmail}
                         onChange={(evt) => setEmail(evt.target.value)}
                         placeholder='Enter email...'
                         required
@@ -50,7 +50,7 @@ function Register(props) {
                         id='input-password'
                         type='password'
                         name='password'
-                        value={password}
+                        value={props.password}
                         onChange={(evt) => setPassword(evt.target.value)}
                         placeholder='Enter Password...'
                         required
@@ -60,7 +60,7 @@ function Register(props) {
                         id='input-confirm-password'
                         type='confirm-password'
                         name='confirm-password'
-                        value={confirmPassword}
+                        value={props.confirmPassword}
                         onChange={(evt) => setConfirmPassword(evt.target.value)}
                         placeholder='Enter Password Again...'
                         required
