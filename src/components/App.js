@@ -1,4 +1,5 @@
 import React from 'react';
+import { Routes, Route, useHistory } from 'react-router-dom';
 import '../index.css';
 import logo from '../images/header-logo.svg';
 import api from '../utils/api';
@@ -12,11 +13,13 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddCardPopup from './AddPlacePopup';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
+import ProtectedRoute from './ProtectedRoute';
 
 // =====>
 function App() {
   // USER STATE VARIABLES
   const [currentUser, setCurrentUser] = React.useState({});
+  const [loggedIn, setLoggedIn] = React.useState(false);
 
   // POPUPS' STATE VARIABLES
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -158,19 +161,23 @@ function App() {
 
         <Header logo={logo} />
 
-        <Main
-          onEditProfileClick={handleEditProfileClick}
-          onAddCardClick={handleAddCardClick}
-          onEditAvatarClick={handleEditAvatarClick}
-          onCardClick={handleCardClick}
-          deleteCardButton={handleDeleteCardClick}
-          onImageClick={handleImageClick}
-          onClose={closeAllPopups}
-          isImagePopupOpen={isImagePopupOpen}
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-        />
+        <Routes>
+          <Route exact path='/' loggedIn={loggedIn} element={<ProtectedRoute />}>
+            <Main
+              onEditProfileClick={handleEditProfileClick}
+              onAddCardClick={handleAddCardClick}
+              onEditAvatarClick={handleEditAvatarClick}
+              onCardClick={handleCardClick}
+              deleteCardButton={handleDeleteCardClick}
+              onImageClick={handleImageClick}
+              onClose={closeAllPopups}
+              isImagePopupOpen={isImagePopupOpen}
+              cards={cards}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
+            />
+          </Route>
+        </Routes>
 
         <Footer />
 
