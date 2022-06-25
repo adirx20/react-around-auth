@@ -1,17 +1,13 @@
 import React from 'react';
-import { Route, Navigate, Outlet } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 // =====>
 function ProtectedRoute({ children, loggedIn, ...props }) {
-    return(
-        <Route {...props}>
-            {
-                loggedIn
-                ? <Outlet />
-                : <Navigate to='/signin' />
-            }
-        </Route>
-    )
+    return (
+        loggedIn
+            ? { children }
+            : <Navigate to='/signin' />
+    );
 }
 // <=====
 

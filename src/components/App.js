@@ -1,40 +1,48 @@
-import React from 'react';
-import { Routes, Route, useHistory } from 'react-router-dom';
-import '../index.css';
-import logo from '../images/header-logo.svg';
-import api from '../utils/api';
-import CurrentUserContext from '../contexts/CurrentUserContext';
-import Header from './Header';
-import Main from './Main';
-import Card from './Card';
-import Footer from './Footer';
-import EditProfilePopup from './EditProfilePopup';
-import EditAvatarPopup from './EditAvatarPopup';
-import AddCardPopup from './AddPlacePopup';
-import PopupWithForm from './PopupWithForm';
-import ImagePopup from './ImagePopup';
-import ProtectedRoute from './ProtectedRoute';
+import React from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import "../index.css";
+import logo from "../images/header-logo.svg";
+import api from "../utils/api";
+import CurrentUserContext from "../contexts/CurrentUserContext";
+import Header from "./Header";
+import Main from "./Main";
+import Card from "./Card";
+import Footer from "./Footer";
+import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
+import AddCardPopup from "./AddPlacePopup";
+import PopupWithForm from "./PopupWithForm";
+import ImagePopup from "./ImagePopup";
+import ProtectedRoute from "./ProtectedRoute";
+import * as auth from '../utils/auth';
 
 // =====>
 function App() {
-  // USER STATE VARIABLES
-  const [currentUser, setCurrentUser] = React.useState({});
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  // Navigate
+  const navigate = useNavigate();
 
-  // POPUPS' STATE VARIABLES
+  // User state variables
+  const [currentUser, setCurrentUser] = React.useState({});
+  const [loggedIn, setLoggedIn] = React.useState(true);
+
+  // Popups' state variables
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddCardPopupOpen, setIsAddCardPopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
   const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = React.useState(false);
 
-  // SELECTED IMAGE STATE VARIABLE
+  // Selected image state variable
   const [selectedImage, setSelectedImage] = React.useState({});
 
-  // CARDS STATE VARIABLES
+  // Cards state variables
   const [cards, setCards] = React.useState([]);
 
-  // FUNCTIONS
+  // InfoTooltip state variables
+  const [isTipSuccess, setIsTipSuccess] = React.useState(false);
+  const [isTipFailed, setIsTipFailed] = React.useState(false);
+
+  // Functions
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
   }
@@ -68,18 +76,20 @@ function App() {
   }
 
   function deleteCard() {
-    api.deleteCard()
+    api
+      .deleteCard()
       .then((data) => {
         closeAllPopups();
       })
       .catch((err) => {
-        console.log('error', err);
-      })
+        console.log("error", err);
+      });
   }
 
-  // HANDLE UPDATE USER
+  // Handle update user
   function handleUpdateUser(userData) {
-    api.editProfile(userData)
+    api
+      .editProfile(userData)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
@@ -87,96 +97,163 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  // HANDLE AVATAR UPDATE
+  // Handle avatar update
   function handleAvatarUpdate(avatar) {
-    api.editAvatar(avatar)
+    api
+      .editAvatar(avatar)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
       })
-      .catch((err) => console.log(err))
+      .catch((err) => console.log(err));
   }
 
-  // HANDLE CARD LIKE
+  // Handle card like
   function handleCardLike(card) {
-    const isLiked = card.likes.some(like => like._id === currentUser._id);
+    const isLiked = card.likes.some((like) => like._id === currentUser._id);
 
-    api.changeLikeCardStatus(card._id, isLiked)
+    api
+      .changeLikeCardStatus(card._id, isLiked)
       .then((newCard) => {
-        setCards((state) => state.map((currentCard) => currentCard._id === card._id ? newCard : currentCard));
+        setCards((state) =>
+          state.map((currentCard) =>
+            currentCard._id === card._id ? newCard : currentCard
+          )
+        );
       })
       .catch((err) => console.log(err));
   }
 
-  // HANDLE CARD DELETE
+  // Handle card delete
   function handleCardDelete(card) {
     const isOwn = card.owner._id === currentUser._id;
 
-    isOwn && api.deleteCard(card._id)
-      .then(() => setCards((state) => state.filter((currentCard) => currentCard._id !== card._id)))
-      .catch((err) => console.log(err))
+    isOwn &&
+      api
+        .deleteCard(card._id)
+        .then(() =>
+          setCards((state) =>
+            state.filter((currentCard) => currentCard._id !== card._id)
+          )
+        )
+        .catch((err) => console.log(err));
   }
 
-  // HANDLE ADD CARD SUBMIT
+  // Handle add card submit
   function handleAddCardSubmit(cardData) {
-    api.createCard(cardData)
+    api
+      .createCard(cardData)
       .then((newCard) => {
-        console.log('new card', newCard);
+        console.log("new card", newCard);
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
       .catch((err) => console.log(err));
   }
 
-  // MOUNTING
+  // Handle register submit
+  function handleRegisterSubmit(email, password) {
+    auth.register(email, password)
+      .then((res) => {
+        setIsTipSuccess(true);
+        navigate.push('/signin');
+      })
+      .catch((err) => {
+        console.log(`Something is not working... Error: ${err}`);
+        setIsTipFailed(true);
+      })
+  }
+
+  // Handle login submit
+  function handleLoginSubmit(email, password) {
+    auth.authorize(email, password)
+      .then((res) => {
+        // setCurrentUser(currentUser);
+        setLoggedIn(true);
+        setIsTipSuccess(true);
+        navigate.push('/');
+        console.log(`Logged in successfully: ${localStorage}`);
+      })
+  }
+
+  // Handle sign out
+  function handleSignOut() {
+    localStorage.removeItem('jwt');
+    setLoggedIn(false);
+    console.log(`Logged out successfully: ${localStorage}`);
+  }
+
+  // Mounting
   React.useEffect(() => {
-    // GET USER AND CARDS DATA
+    const jwt = localStorage.getItem('jwt');
+
+    if (jwt) {
+      auth.getToken(jwt)
+      .then((res) => {
+        if (res) {
+          setLoggedIn(true);
+          setCurrentUser(res); // maybe need to stringify
+          navigate.push('/');
+        }
+      })
+      .catch((err) => {
+        setIsTipFailed(true);
+        console.log('Something is not working...');
+      })
+    }
+  }, [loggedIn]);
+
+  React.useEffect(() => {
+    // Get user and cards data
     Promise.all([api.getUserInfo(), api.getInitialCards()])
       .then(([userData, cardsData]) => {
-        // USER
+        // User
         setCurrentUser(userData);
-        // CARDS
+        // Cards
         setCards(cardsData);
       })
       .catch((err) => console.log(err));
 
-    // ESCAPE BUTTON EVENT LISTENERS
+    // Escape button event listeners
     const closeByEscape = (evt) => {
-      if (evt.key === 'Escape') {
+      if (evt.key === "Escape") {
         closeAllPopups();
       }
-    }
-    // ADD
-    document.addEventListener('keydown', closeByEscape);
-    // REMOVE
-    return () => document.removeEventListener('keydown', closeByEscape);
-  }, [])
+    };
+    // Add
+    document.addEventListener("keydown", closeByEscape);
+    // Remove
+    return () => document.removeEventListener("keydown", closeByEscape);
+  }, []);
 
   // JSX
   return (
-
-    <div className='page'>
-
+    <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-
         <Header logo={logo} />
-
         <Routes>
-          <Route exact path='/' loggedIn={loggedIn} element={<ProtectedRoute />}>
-            <Main
-              onEditProfileClick={handleEditProfileClick}
-              onAddCardClick={handleAddCardClick}
-              onEditAvatarClick={handleEditAvatarClick}
-              onCardClick={handleCardClick}
-              deleteCardButton={handleDeleteCardClick}
-              onImageClick={handleImageClick}
-              onClose={closeAllPopups}
-              isImagePopupOpen={isImagePopupOpen}
-              cards={cards}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}
-            />
-          </Route>
+          <Route
+            exact path="/"
+            loggedIn={loggedIn}
+            element={
+              <ProtectedRoute>
+                <Main
+                  onEditProfileClick={handleEditProfileClick}
+                  onAddCardClick={handleAddCardClick}
+                  onEditAvatarClick={handleEditAvatarClick}
+                  onCardClick={handleCardClick}
+                  deleteCardButton={handleDeleteCardClick}
+                  onImageClick={handleImageClick}
+                  onClose={closeAllPopups}
+                  isImagePopupOpen={isImagePopupOpen}
+                  cards={cards}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete}
+                />
+              </ProtectedRoute>
+            } />
+          <Route path="/signin"></Route>
+          <Route path="/signup"></Route>
         </Routes>
 
         <Footer />
@@ -199,10 +276,14 @@ function App() {
           onAddCard={handleAddCardSubmit}
         />
 
-        <PopupWithForm name='delete-card' title='Are you sure?' saveButtonTitle='Yes'
+        <PopupWithForm
+          name="delete-card"
+          title="Are you sure?"
+          saveButtonTitle="Yes"
           isOpen={isDeleteCardPopupOpen}
           onClose={closeAllPopups}
-          handleSubmit={deleteCard} />
+          handleSubmit={deleteCard}
+        />
 
         <ImagePopup
           isOpen={isImagePopupOpen}
@@ -210,11 +291,8 @@ function App() {
           imageLink={selectedImage.link}
           imageCaption={selectedImage.name}
         />
-
       </CurrentUserContext.Provider>
-
     </div>
-
   );
 }
 // <=====
