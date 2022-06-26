@@ -26,7 +26,7 @@ function App() {
 
   // User state variables
   const [currentUser, setCurrentUser] = React.useState({});
-  const [loggedIn, setLoggedIn] = React.useState(true);
+  const [loggedIn, setLoggedIn] = React.useState(false);
 
   // Popups' state variables
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -159,23 +159,38 @@ function App() {
     auth.register(email, password)
       .then((res) => {
         setIsTipSuccess(true);
-        navigate.push('/signin');
+        navigate('/signin');
       })
       .catch((err) => {
-        console.log(`Something is not working... Error: ${err}`);
+        if (err.status === 400) {
+          console.log('400 - one of the fields was filled incorrectly');
+        } else {
+          console.log(`Something is not working... Error: ${err}`);
+        }
         setIsTipFailed(true);
       })
   }
 
   // Handle login submit
   function handleLoginSubmit(email, password) {
-    auth.authorize(email, password)
-      .then((res) => {
-        // setCurrentUser(currentUser);
+    auth.login(email, password)
+      .then((data) => {
+        // setCurrentUser(data);
         setLoggedIn(true);
         setIsTipSuccess(true);
-        navigate.push('/');
+        navigate('/');
         console.log(`Logged in successfully: ${localStorage}`);
+      })
+      .catch((err) => {
+        if (err.status === 400) {
+          console.log('400 - one or more of the fields were not provided');
+        }
+        if (err.status === 401) {
+          console.log('401 - the user with the specified email not found');
+        } else {
+          console.log(`Something is not working... Error: ${err}`);
+        }
+        setIsTipFailed(true);
       })
   }
 
@@ -255,12 +270,14 @@ function App() {
                 />
               </ProtectedRoute>
             } />
-          <Route path="/signup">
-            <Register handleRegister={handleRegisterSubmit} />
-          </Route>
-          <Route path="/signin">
-            <Login />
-          </Route>
+          <Route
+            path="/signup"
+            element={<Register handleRegister={handleRegisterSubmit} />}
+          />
+          <Route
+            path="/signin"
+            element={<Login handleLogin={handleLoginSubmit} />}
+          />
         </Routes>
 
         <Footer />
