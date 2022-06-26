@@ -8,21 +8,22 @@ function Register(props) {
     const [password, setPassword] = useState('');
 
     // Registration functions
-    const handleSubmit = () => {
-
+    const handleSubmit = (evt) => {
+        evt.preventDefault();
+        props.handleRegister(email, password);
     }
 
     // JSX
     return (
-        <section className='register'>
+        <section className='auth'>
             <form
-                className='register__form'
+                className='auth__form'
                 onSubmit={handleSubmit}
             >
                 <div>
-                    <h1 className='register__title'>{props.title}</h1>
+                    <h1 className='auth__title'>{props.title}</h1>
                     <input
-                        className='register__input'
+                        className='auth__input'
                         id='input-email'
                         type='email'
                         name='email'
@@ -32,7 +33,7 @@ function Register(props) {
                         required
                     />
                     <input
-                        className='register__input'
+                        className='auth__input'
                         id='input-password'
                         type='password'
                         name='password'
@@ -44,13 +45,13 @@ function Register(props) {
                 </div>
                 <div>
                     <button
-                        className='register__submit'
+                        className='auth__submit'
                         type='submit'
                     >
                         {props.title}
                     </button>
-                    <p className="register__text">Already a member?
-                        <Link to='/signin' className='register__link'> {props.link} </Link>
+                    <p className="auth__text">Already a member?
+                        <Link to='/signin' className='auth__link'> {props.link} </Link>
                         here!
                     </p>
                 </div>

@@ -15,6 +15,9 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import ProtectedRoute from "./ProtectedRoute";
 import * as auth from '../utils/auth';
+import Register from './Register';
+import Login from './Login';
+import InfoTooltip from './InfoTooltip';
 
 // =====>
 function App() {
@@ -189,17 +192,17 @@ function App() {
 
     if (jwt) {
       auth.getToken(jwt)
-      .then((res) => {
-        if (res) {
-          setLoggedIn(true);
-          setCurrentUser(res); // maybe need to stringify
-          navigate.push('/');
-        }
-      })
-      .catch((err) => {
-        setIsTipFailed(true);
-        console.log('Something is not working...');
-      })
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            setCurrentUser(res); // maybe need to stringify
+            navigate.push('/');
+          }
+        })
+        .catch((err) => {
+          setIsTipFailed(true);
+          console.log('Something is not working...');
+        })
     }
   }, [loggedIn]);
 
@@ -252,8 +255,12 @@ function App() {
                 />
               </ProtectedRoute>
             } />
-          <Route path="/signin"></Route>
-          <Route path="/signup"></Route>
+          <Route path="/signup">
+            <Register handleRegister={handleRegisterSubmit} />
+          </Route>
+          <Route path="/signin">
+            <Login />
+          </Route>
         </Routes>
 
         <Footer />
