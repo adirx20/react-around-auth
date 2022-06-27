@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import "../index.css";
 import logo from "../images/header-logo.svg";
 import api from "../utils/api";
@@ -21,12 +21,16 @@ import InfoTooltip from './InfoTooltip';
 
 // =====>
 function App() {
-  // Navigate
+  // Navigation
   const navigate = useNavigate();
+  const location = useLocation();
 
   // User state variables
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
+
+  // Header status state variable
+  const [headerStatus, setHeaderStatus] = React.useState('');
 
   // Popups' state variables
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -175,11 +179,11 @@ function App() {
   function handleLoginSubmit(email, password) {
     auth.login(email, password)
       .then((data) => {
-        // setCurrentUser(data);
+        setCurrentUser(data);
         setLoggedIn(true);
         setIsTipSuccess(true);
         navigate('/');
-        console.log(`Logged in successfully: ${localStorage}`);
+        console.log(`Logged in successfully!`, data, currentUser);
       })
       .catch((err) => {
         if (err.status === 400) {
@@ -198,20 +202,33 @@ function App() {
   function handleSignOut() {
     localStorage.removeItem('jwt');
     setLoggedIn(false);
-    console.log(`Logged out successfully: ${localStorage}`);
+    navigate('/signin');
+    console.log(`Logged out successfully!`);
   }
 
-  // Mounting
+  // Mounting path check
+  React.useEffect(() => {
+    if (location.pathname === '/signup') {
+      setHeaderStatus('signup')
+    }
+    if (location.pathname === '/signin') {
+      setHeaderStatus('signin')
+    } else {
+      setHeaderStatus('main')
+    }
+  });
+
+  // Mounting token check
   React.useEffect(() => {
     const jwt = localStorage.getItem('jwt');
 
     if (jwt) {
+      console.log('this is jwt: ', jwt)
       auth.getToken(jwt)
         .then((res) => {
-          console.log('resres', res)
+          console.log('this is res: ', res)
           if (res) {
-            // setLoggedIn(true);
-            // setCurrentUser(res); // maybe need to stringify
+            setLoggedIn(true);
             navigate('/');
           }
         })
@@ -222,6 +239,7 @@ function App() {
     }
   }, [loggedIn]);
 
+  // Mounting cards and user
   React.useEffect(() => {
     // Get user and cards data
     Promise.all([api.getUserInfo(), api.getInitialCards()])
@@ -249,13 +267,18 @@ function App() {
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header logo={logo} />
+        <Header
+          logo={logo}
+          headerStatus={headerStatus}
+          currentUser={currentUser}
+          logOut={handleSignOut}
+        />
         <Routes>
           <Route
             exact path="/"
             loggedIn={loggedIn}
             element={
-              <ProtectedRoute>
+              <ProtectedRoute loggedIn={loggedIn}>
                 <Main
                   onEditProfileClick={handleEditProfileClick}
                   onAddCardClick={handleAddCardClick}
