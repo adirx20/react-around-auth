@@ -208,10 +208,11 @@ function App() {
     if (jwt) {
       auth.getToken(jwt)
         .then((res) => {
+          console.log('resres', res)
           if (res) {
-            setLoggedIn(true);
-            setCurrentUser(res); // maybe need to stringify
-            navigate.push('/');
+            // setLoggedIn(true);
+            // setCurrentUser(res); // maybe need to stringify
+            navigate('/');
           }
         })
         .catch((err) => {

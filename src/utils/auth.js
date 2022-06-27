@@ -31,10 +31,10 @@ export const login = (email, password) => {
     })
         .then((res) => res.json())
         .then((data) => {
-            console.log(data);
-            if (data.jwt) {
-                console.log(data.jwt)
-                localStorage.setItem('jwt', data.jwt);
+            console.log('asadasda', data.token);
+            if (data.token) {
+                console.log(data.token)
+                localStorage.setItem('jwt', data.token);
                 return data;
             }
         })
