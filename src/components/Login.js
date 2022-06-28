@@ -25,7 +25,7 @@ function Login(props) {
                 className='auth__form'
                 onSubmit={handleSubmit}
             >
-                <div>
+                <div className='auth__container'>
                     <h1 className='auth__title'>Log in</h1>
                     <input
                         className='auth__input'
