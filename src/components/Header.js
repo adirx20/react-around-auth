@@ -16,7 +16,7 @@ function Header({ currentUser, headerStatus, logOut, ...props }) {
                     headerStatus === '/signup'
                     &&
                     <Link className='header__link' to='/signin'>
-                        Login
+                        Log in
                     </Link>
                 )
                 ||
@@ -24,7 +24,7 @@ function Header({ currentUser, headerStatus, logOut, ...props }) {
                     headerStatus === '/signin'
                     &&
                     <Link className='header__link' to='/signup'>
-                        Register
+                        Sign up
                     </Link>
                 )
                 ||

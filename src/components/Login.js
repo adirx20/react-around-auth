@@ -1,4 +1,4 @@
-import React ,{ useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import * as auth from '../utils/auth';
 
@@ -13,7 +13,7 @@ function Login(props) {
 
     // Login functions
     const handleSubmit = (evt) => {
-        evt.preventDefault();   
+        evt.preventDefault();
         props.handleLogin(email, password);
     }
 
@@ -26,7 +26,7 @@ function Login(props) {
                 onSubmit={handleSubmit}
             >
                 <div>
-                    <h1 className='auth__title'>{props.title}</h1>
+                    <h1 className='auth__title'>Log in</h1>
                     <input
                         className='auth__input'
                         id='input-email'
@@ -34,7 +34,7 @@ function Login(props) {
                         name='email'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder='Enter email...'
+                        placeholder='Email'
                         required
                     />
                     <input
@@ -44,21 +44,20 @@ function Login(props) {
                         name='password'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        placeholder='Enter password...'
+                        placeholder='Password'
                         required
                     />
                 </div>
                 <div>
                     <button
-                        className='auth__submit'
+                        className='auth__submit-button'
                         type='submit'
                     >
-                        {props.title}
+                        Log in
                     </button>
-                    <p className="auth__text">Not a member yet?
-                        <Link to='/signup' className='auth__links'> {props.link} </Link>
-                        here!
-                    </p>
+                    <Link className='auth__link' to='/signup'>
+                        Not a member yet? Sign up here!
+                    </Link>
                 </div>
 
             </form>

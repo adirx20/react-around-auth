@@ -20,8 +20,8 @@ function Register(props) {
                 className='auth__form'
                 onSubmit={handleSubmit}
             >
-                <div>
-                    <h1 className='auth__title'>{props.title}</h1>
+                <div className='auth__container'>
+                    <h1 className='auth__title'>Sign up</h1>
                     <input
                         className='auth__input'
                         id='input-email'
@@ -29,7 +29,7 @@ function Register(props) {
                         name='email'
                         value={props.userEmail}
                         onChange={(evt) => setEmail(evt.target.value)}
-                        placeholder='Enter email...'
+                        placeholder='Email'
                         required
                     />
                     <input
@@ -39,21 +39,20 @@ function Register(props) {
                         name='password'
                         value={props.password}
                         onChange={(evt) => setPassword(evt.target.value)}
-                        placeholder='Enter Password...'
+                        placeholder='Password'
                         required
                     />
                 </div>
                 <div>
                     <button
-                        className='auth__submit'
+                        className='auth__submit-button'
                         type='submit'
                     >
-                        {props.title}
+                        Sign up
                     </button>
-                    <p className="auth__text">Already a member?
-                        <Link to='/signin' className='auth__link'> {props.link} </Link>
-                        here!
-                    </p>
+                    <Link className='auth__link' to='/signin'>
+                        Already a member? Log in here!
+                    </Link>
                 </div>
 
             </form>
