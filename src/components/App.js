@@ -8,7 +8,6 @@ import api from "../utils/api";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import Header from "./Header";
 import Main from "./Main";
-import Card from "./Card";
 import Footer from "./Footer";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
@@ -48,9 +47,7 @@ function App() {
   // Cards state variables
   const [cards, setCards] = React.useState([]);
 
-  // InfoTooltip state variables
-  const [isTipSuccess, setIsTipSuccess] = React.useState(false);
-  const [isTipFailed, setIsTipFailed] = React.useState(false);
+  // InfoTooltip status state variable
   const [tipStatus, setTipStatus] = React.useState(false);
 
   // Functions
@@ -84,6 +81,7 @@ function App() {
     setIsAddCardPopupOpen(false);
     setIsImagePopupOpen(false);
     setIsDeleteCardPopupOpen(false);
+    setIsInfoToolTipOpen(false);
   }
 
   function deleteCard() {
@@ -166,7 +164,8 @@ function App() {
   function handleRegisterSubmit(email, password) {
     auth.register(email, password)
       .then((res) => {
-        setIsTipSuccess(true);
+        setTipStatus(true);
+        setIsInfoToolTipOpen(true);
         navigate('/signin');
       })
       .catch((err) => {
@@ -175,7 +174,8 @@ function App() {
         } else {
           console.log(`Something is not working... Error: ${err}`);
         }
-        setIsTipFailed(true);
+        setTipStatus(false);
+        setIsInfoToolTipOpen(true);
       })
   }
 
@@ -185,7 +185,6 @@ function App() {
       .then((data) => {
         setCurrentUser(data);
         setLoggedIn(true);
-        // setIsTipSuccess(true);
         setTipStatus(true);
         navigate('/');
         console.log(`Logged in successfully!`, data, currentUser);
@@ -199,8 +198,8 @@ function App() {
         } else {
           console.log(`Something is not working... Error: ${err}`);
         }
-        // setIsInfoToolTipOpen(true);
-        setIsTipFailed(true);
+        setTipStatus(false);
+        setIsInfoToolTipOpen(true);
       })
   }
 
@@ -240,7 +239,8 @@ function App() {
           }
         })
         .catch((err) => {
-          setIsTipFailed(true);
+          setTipStatus(false);
+          setIsInfoToolTipOpen(true);
           console.log('Something is not working...');
         })
     }

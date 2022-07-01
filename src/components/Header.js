@@ -1,5 +1,4 @@
 import { Link, useLocation } from 'react-router-dom';
-import CurrentUserContext from '../contexts/CurrentUserContext';
 
 // =====>
 function Header({ loggedIn, currentUser, headerStatus, logOut, ...props }) {

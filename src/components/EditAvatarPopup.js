@@ -1,5 +1,4 @@
 import React from 'react';
-import api from '../utils/api';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import PopupWithForm from '../components/PopupWithForm';
 

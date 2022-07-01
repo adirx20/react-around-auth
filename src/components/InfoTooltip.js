@@ -6,7 +6,7 @@ function InfoToolTip({ tipStatus, ...props }) {
     // JSX
     return (
         <>
-            <PopupWithTip // Success tip
+            <PopupWithTip
                 onClose={props.onClose}
                 isOpen={props.isOpen}
                 tipIcon={

@@ -1,7 +1,5 @@
 import React from 'react';
-import api from '../utils/api';
 import CurrentUserContext from '../contexts/CurrentUserContext';
-import ImagePopup from './ImagePopup';
 import Card from '../components/Card';
 
 // =====>
