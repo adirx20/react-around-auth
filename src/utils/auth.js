@@ -55,8 +55,9 @@ export const login = (email, password) => {
             return res.json();
         }
     })
-    .then((data) => {
-        return data;
-    })
+    // .then((data) => {
+    //     console.log('this is from auth', data);
+    //     return data;
+    // })
     .catch((err) => console.log(err));
 };

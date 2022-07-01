@@ -2,6 +2,8 @@ import React from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import "../index.css";
 import logo from "../images/header-logo.svg";
+import successTipIcon from '../images/auth-icon-success.svg';
+import failedTipIcon from '../images/auth-icon-failed.svg';
 import api from "../utils/api";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import Header from "./Header";
@@ -17,7 +19,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import * as auth from '../utils/auth';
 import Register from './Register';
 import Login from './Login';
-import InfoTooltip from './InfoTooltip';
+import InfoToolTip from './InfoToolTip';
 
 // =====>
 function App() {
@@ -38,6 +40,7 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
   const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = React.useState(false);
+  const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
 
   // Selected image state variable
   const [selectedImage, setSelectedImage] = React.useState({});
@@ -48,6 +51,7 @@ function App() {
   // InfoTooltip state variables
   const [isTipSuccess, setIsTipSuccess] = React.useState(false);
   const [isTipFailed, setIsTipFailed] = React.useState(false);
+  const [tipStatus, setTipStatus] = React.useState(false);
 
   // Functions
   function handleEditProfileClick() {
@@ -181,7 +185,8 @@ function App() {
       .then((data) => {
         setCurrentUser(data);
         setLoggedIn(true);
-        setIsTipSuccess(true);
+        // setIsTipSuccess(true);
+        setTipStatus(true);
         navigate('/');
         console.log(`Logged in successfully!`, data, currentUser);
       })
@@ -194,6 +199,7 @@ function App() {
         } else {
           console.log(`Something is not working... Error: ${err}`);
         }
+        // setIsInfoToolTipOpen(true);
         setIsTipFailed(true);
       })
   }
@@ -216,7 +222,7 @@ function App() {
     } else {
       setHeaderStatus('main')
     }
-  });
+  }, [location.pathname]);
 
   // Mounting token check
   React.useEffect(() => {
@@ -228,6 +234,7 @@ function App() {
         .then((res) => {
           console.log('this is res: ', res)
           if (res) {
+            setCurrentUser(res);
             setLoggedIn(true);
             navigate('/');
           }
@@ -332,6 +339,18 @@ function App() {
           onClose={closeAllPopups}
           handleSubmit={deleteCard}
         />
+
+        <InfoToolTip
+          onClose={closeAllPopups}
+          isOpen={isInfoToolTipOpen}
+          tipStatus={tipStatus}
+          // isTipSuccess={isTipSuccess}
+          // isTipFailed={isTipFailed}
+          successTipIcon={successTipIcon}
+          failedTipIcon={failedTipIcon}
+        />
+
+        {/* <InfoToolTip /> */}
 
         <ImagePopup
           isOpen={isImagePopupOpen}

@@ -1,10 +1,13 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 
 // =====>
-function Header({ currentUser, headerStatus, logOut, ...props }) {
-    return (
+function Header({ loggedIn, currentUser, headerStatus, logOut, ...props }) {
+    // Location
+    const location = useLocation();
 
+    // JSX
+    return (
         <header className='header'>
             <img
                 className='header__logo'
@@ -12,38 +15,24 @@ function Header({ currentUser, headerStatus, logOut, ...props }) {
                 alt='Around the U.S. logo'
             />
             {
-                (
-                    headerStatus === '/signup'
-                    &&
-                    <Link className='header__link' to='/signin'>
-                        Log in
-                    </Link>
-                )
-                ||
-                (
-                    headerStatus === '/signin'
-                    &&
-                    <Link className='header__link' to='/signup'>
-                        Sign up
-                    </Link>
-                )
-                ||
-                (
-                    headerStatus === 'main'
-                    &&
-                    <>
-                        <p className='header__user-email'>{currentUser.email}</p>
-                        <button
-                            className='header__logout-button button-effect'
-                            type='button'
-                            onClick={logOut}
-                        >
-                            Log Out
-                        </button>
-                    </>
-                )
+                location.pathname === '/signup'
+                    ? <Link className='header__link' to='/signin'>Log in</Link>
+                    : location.pathname === '/signin'
+                        ? <Link className='header__link' to='/signup'>Sign up</Link>
+                        : location.pathname === '/'
+                            ? <>
+                                <p className='header__user-email'>{currentUser.email}</p>
+                                <button
+                                    className='header__logout-button button-effect'
+                                    type='button'
+                                    onClick={logOut}
+                                >
+                                    Log Out
+                                </button>
+                            </>
+                            : ''
             }
-        </header>
+        </header >
 
     );
 }
