@@ -100,7 +100,8 @@ function App() {
     api
       .editProfile(userData)
       .then((res) => {
-        setCurrentUser(res);
+        console.log('haha', res)
+        setCurrentUser({ ...currentUser, res });
         closeAllPopups();
       })
       .catch((err) => console.log(err));
@@ -111,7 +112,7 @@ function App() {
     api
       .editAvatar(avatar)
       .then((res) => {
-        setCurrentUser(res);
+        setCurrentUser({ ...currentUser, res });
         closeAllPopups();
       })
       .catch((err) => console.log(err));
@@ -182,12 +183,13 @@ function App() {
   // Handle login submit
   function handleLoginSubmit(email, password) {
     auth.login(email, password)
-      .then((data) => {
-        setCurrentUser(data);
+      .then((res) => {
+        localStorage.setItem('jwt', res.token);
+        setCurrentUser({ ...currentUser, email: res.data.email, _id: res.data._id });
         setLoggedIn(true);
         setTipStatus(true);
         navigate('/');
-        console.log(`Logged in successfully!`, data, currentUser);
+        console.log(`Logged in successfully!`, res, currentUser);
       })
       .catch((err) => {
         if (err.status === 400) {
@@ -231,12 +233,18 @@ function App() {
       console.log('this is jwt: ', jwt)
       auth.getToken(jwt)
         .then((res) => {
-          console.log('this is res: ', res)
+          console.log('this is res: ', res.data)
           if (res) {
-            setCurrentUser(res);
-            setLoggedIn(true);
-            navigate('/');
+            setCurrentUser({ ...currentUser, email: res.data.email, _id: res.data._id });
+            // setLoggedIn(true);
+            // navigate('/');
+            // console.log('current user: ', currentUser)
           }
+        })
+        .then((data) => {
+          setLoggedIn(true);
+          navigate('/');
+          console.log('current user: ', currentUser)
         })
         .catch((err) => {
           setTipStatus(false);
@@ -252,7 +260,7 @@ function App() {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
       .then(([userData, cardsData]) => {
         // User
-        setCurrentUser(userData);
+        setCurrentUser({ ...currentUser, userData });
         // Cards
         setCards(cardsData);
       })

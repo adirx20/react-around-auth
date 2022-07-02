@@ -31,10 +31,8 @@ export const login = (email, password) => {
     })
         .then((res) => res.json())
         .then((data) => {
-            console.log('asadasda', data.token);
             if (data.token) {
-                console.log(data.token)
-                localStorage.setItem('jwt', data.token);
+                // localStorage.setItem('jwt', data.token);
                 return data;
             }
         })
