@@ -185,7 +185,7 @@ function App() {
     auth.login(email, password)
       .then((res) => {
         localStorage.setItem('jwt', res.token);
-        setCurrentUser({ ...currentUser, email: res.data.email, _id: res.data._id });
+        setCurrentUser({ ...currentUser, res });
         setLoggedIn(true);
         setTipStatus(true);
         navigate('/');
@@ -245,6 +245,7 @@ function App() {
           setLoggedIn(true);
           navigate('/');
           console.log('current user: ', currentUser)
+          console.log('userData from currentUser: ', currentUser.userData)
         })
         .catch((err) => {
           setTipStatus(false);
@@ -276,7 +277,7 @@ function App() {
     document.addEventListener("keydown", closeByEscape);
     // Remove
     return () => document.removeEventListener("keydown", closeByEscape);
-  }, []);
+  }, [loggedIn]);
 
   // JSX
   return (
