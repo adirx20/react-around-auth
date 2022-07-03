@@ -19,7 +19,7 @@ function Header({ loggedIn, currentUser, headerStatus, logOut, ...props }) {
                     : location.pathname === '/signin'
                         ? <Link className='header__link' to='/signup'>Sign up</Link>
                         : location.pathname === '/'
-                            ? <>
+                            ? <div className='header__user-container'>
                                 <p className='header__user-email'>{currentUser.email}</p>
                                 <button
                                     className='header__logout-button button-effect'
@@ -28,7 +28,7 @@ function Header({ loggedIn, currentUser, headerStatus, logOut, ...props }) {
                                 >
                                     Log Out
                                 </button>
-                            </>
+                            </div>
                             : ''
             }
         </header >
