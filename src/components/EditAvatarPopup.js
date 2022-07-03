@@ -3,25 +3,45 @@ import PopupWithForm from '../components/PopupWithForm';
 
 // =====>
 function EditAvatarPopup(props) {
-    // CURRENT USER CONTEXT
-    const avatarRef = React.useRef();
+    // Avatar link state variable
+    const [avatarLink, setAvatarLink] = React.useState('');
 
-    // HANDLERS
+    // Handlers
+    function handleLinkChange(evt) {
+        setAvatarLink(evt.target.value);
+    }
+
     function handleSubmit(evt) {
         evt.preventDefault();
 
-        props.onUpdateAvatar(avatarRef.current.value);
+        props.onUpdateAvatar(avatarLink);
     }
+
+    // Mounting
+    React.useEffect(() => {
+        setAvatarLink('');
+    }, [props.isOpen]);
 
     // JSX
     return (
-        <PopupWithForm name='edit-avatar' title='Change profile picture' saveButtonTitle='Save'
+        <PopupWithForm
+            name='edit-avatar'
+            title='Change profile picture'
+            saveButtonTitle='Save'
             isOpen={props.isOpen}
             onClose={props.onClose}
             onSubmit={handleSubmit}
         >
-            <input ref={avatarRef} id='avatar-link-input' className='form__input form__input_type_avatar-link' type='url' name='avatar-link'
-                placeholder='Image URL' defaultValue='' required />
+            <input
+                id='avatar-link-input'
+                className='form__input form__input_type_avatar-link'
+                type='url'
+                name='avatar-link'
+                placeholder='Image URL'
+                value={avatarLink}
+                onChange={handleLinkChange}
+                required
+            />
             <span id='avatar-link-input-error' className='form__input-error-message'></span>
         </PopupWithForm>
     );

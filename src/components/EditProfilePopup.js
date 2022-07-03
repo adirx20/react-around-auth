@@ -22,7 +22,7 @@ function EditProfilePopup(props) {
 
     function handleSubmit(evt) {
         evt.preventDefault();
-        
+
         props.onUpdateUser({
             name,
             about: description,
@@ -42,11 +42,30 @@ function EditProfilePopup(props) {
             onClose={props.onClose}
             onSubmit={handleSubmit}
         >
-            <input id='name-input' className='form__input form__input_type_name' type='text' name='name' placeholder='Name'
-                value={name || ''} required minLength='2' maxLength='40' onChange={handleNameChange} />
+            <input
+                id='name-input'
+                className='form__input form__input_type_name'
+                type='text'
+                name='name'
+                placeholder='Name'
+                value={name || ''}
+                required
+                minLength='2'
+                maxLength='40'
+                onChange={handleNameChange}
+            />
             <span id='name-input-error' className='form__input-error-message'></span>
-            <input id='proffession-input' className='form__input form__input_type_profession' type='text' name='profession'
-                placeholder='About me' value={description || ''} required minLength='2' maxLength='200' onChange={handleDescriptionChange} />
+            <input
+                id='proffession-input'
+                className='form__input form__input_type_profession'
+                type='text'
+                name='profession'
+                placeholder='About me'
+                value={description || ''}
+                required
+                minLength='2'
+                maxLength='200'
+                onChange={handleDescriptionChange} />
             <span id='proffession-input-error' className='form__input-error-message'></span>
         </PopupWithForm>
     );

@@ -3,11 +3,11 @@ import PopupWithForm from './PopupWithForm';
 
 // =====>
 function AddCardPopup(props) {
-    // INPUTS
+    // Inputs
     const [cardTitle, setCardTitle] = React.useState('');
     const [cardLink, setCardLink] = React.useState('');
 
-    // HANDLERS
+    // Hamdlers
     function handleCardTitleChange(evt) {
         setCardTitle(evt.target.value);
     }
@@ -25,7 +25,7 @@ function AddCardPopup(props) {
         });
     }
 
-    // MOUNTING
+    // Mounting
     React.useEffect(() => {
         setCardTitle('');
         setCardLink('');
@@ -38,11 +38,29 @@ function AddCardPopup(props) {
             onClose={props.onClose}
             onSubmit={handleSubmit}
         >
-            <input id='card-input' className='form__input form__input_type_card-title' type='text' name='card-title'
-                placeholder='Title' value={cardTitle} required minLength='1' maxLength='30' onChange={handleCardTitleChange} />
+            <input
+                id='card-input'
+                className='form__input form__input_type_card-title'
+                type='text'
+                name='card-title'
+                placeholder='Title'
+                value={cardTitle}
+                required
+                minLength='1'
+                maxLength='30'
+                onChange={handleCardTitleChange}
+            />
             <span id='card-input-error' className='form__input-error-message'></span>
-            <input id='card-link-input' className='form__input form__input_type_card-link' type='url' name='card-link'
-                placeholder='Image URL' value={cardLink} required onChange={handleCardLinkChange} />
+            <input
+                id='card-link-input'
+                className='form__input form__input_type_card-link'
+                type='url'
+                name='card-link'
+                placeholder='Image URL'
+                value={cardLink}
+                required
+                onChange={handleCardLinkChange}
+            />
             <span id='card-link-input-error' className='form__input-error-message'></span>
         </PopupWithForm>
     );
