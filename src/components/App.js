@@ -103,8 +103,7 @@ function App() {
     api
       .editProfile(userData)
       .then((res) => {
-        console.log("haha", res);
-        setCurrentUser({ ...currentUser, res });
+        setCurrentUser({ ...currentUser, ...res });
         closeAllPopups();
       })
       .catch((err) => console.log(err));
@@ -115,7 +114,7 @@ function App() {
     api
       .editAvatar(avatar)
       .then((res) => {
-        setCurrentUser({ ...currentUser, res });
+        setCurrentUser({ ...currentUser, ...res });
         closeAllPopups();
       })
       .catch((err) => console.log(err));
@@ -236,7 +235,6 @@ function App() {
     const jwt = localStorage.getItem("jwt");
     !loggedIn &&
       jwt &&
-      //console.log("this is jwt: ", jwt);
       auth
         .getToken(jwt)
         .then((res) => {

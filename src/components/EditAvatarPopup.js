@@ -1,12 +1,9 @@
 import React from 'react';
-import CurrentUserContext from '../contexts/CurrentUserContext';
 import PopupWithForm from '../components/PopupWithForm';
 
 // =====>
 function EditAvatarPopup(props) {
     // CURRENT USER CONTEXT
-    const currentUser = React.useContext(CurrentUserContext);
-
     const avatarRef = React.useRef();
 
     // HANDLERS
