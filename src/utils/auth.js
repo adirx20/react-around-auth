@@ -9,15 +9,7 @@ export const register = (email, password) => {
         },
         body: JSON.stringify({ email, password }),
     })
-        .then((res) => {
-            if (res.status === 201) {
-                return res.json();
-            }
-        })
-        .then((res) => {
-            return res;
-        })
-        .catch((err) => console.log(err));
+        .then(res => checkResponce(res));
 };
 
 export const login = (email, password) => {
@@ -29,17 +21,10 @@ export const login = (email, password) => {
         },
         body: JSON.stringify({ email, password }),
     })
-        .then((res) => res.json())
-        .then((data) => {
-            if (data.token) {
-                // localStorage.setItem('jwt', data.token);
-                return data;
-            }
-        })
-        .catch((err) => console.log(err));
+        .then(res => checkResponce(res));
 };
 
- export const getToken = (token) => {
+export const getToken = (token) => {
     return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
         headers: {
@@ -48,14 +33,12 @@ export const login = (email, password) => {
             'Authorization': `Bearer ${token}`,
         },
     })
-    .then((res) => {
-        if (res.status === 200) {
-            return res.json();
-        }
-    })
-    // .then((data) => {
-    //     console.log('this is from auth', data);
-    //     return data;
-    // })
-    .catch((err) => console.log(err));
-};
+        .then(res => checkResponce(res));
+}
+
+function checkResponce(res) {
+    if (res.ok) {
+        return res.json();
+    }
+    return Promise.reject(`Error: ${res.status}`);
+}

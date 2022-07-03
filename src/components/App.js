@@ -2,8 +2,8 @@ import React from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import "../index.css";
 import logo from "../images/header-logo.svg";
-import successTipIcon from '../images/auth-icon-success.svg';
-import failedTipIcon from '../images/auth-icon-failed.svg';
+import successTipIcon from "../images/auth-icon-success.svg";
+import failedTipIcon from "../images/auth-icon-failed.svg";
 import api from "../utils/api";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import Header from "./Header";
@@ -15,10 +15,10 @@ import AddCardPopup from "./AddPlacePopup";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import ProtectedRoute from "./ProtectedRoute";
-import * as auth from '../utils/auth';
-import Register from './Register';
-import Login from './Login';
-import InfoToolTip from './InfoToolTip';
+import * as auth from "../utils/auth";
+import Register from "./Register";
+import Login from "./Login";
+import InfoTooltip from "./InfoTooltip";
 
 // =====>
 function App() {
@@ -31,14 +31,17 @@ function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
 
   // Header status state variable
-  const [headerStatus, setHeaderStatus] = React.useState('');
+  const [headerStatus, setHeaderStatus] = React.useState("");
 
   // Popups' state variables
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
+    React.useState(false);
   const [isAddCardPopupOpen, setIsAddCardPopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
+    React.useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
-  const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = React.useState(false);
+  const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] =
+    React.useState(false);
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
 
   // Selected image state variable
@@ -100,7 +103,7 @@ function App() {
     api
       .editProfile(userData)
       .then((res) => {
-        console.log('haha', res)
+        console.log("haha", res);
         setCurrentUser({ ...currentUser, res });
         closeAllPopups();
       })
@@ -163,110 +166,111 @@ function App() {
 
   // Handle register submit
   function handleRegisterSubmit(email, password) {
-    auth.register(email, password)
+    auth
+      .register(email, password)
       .then((res) => {
         setTipStatus(true);
         setIsInfoToolTipOpen(true);
-        navigate('/signin');
+        navigate("/signin");
       })
       .catch((err) => {
         if (err.status === 400) {
-          console.log('400 - one of the fields was filled incorrectly');
+          console.log("400 - one of the fields was filled incorrectly");
         } else {
           console.log(`Something is not working... Error: ${err}`);
         }
         setTipStatus(false);
         setIsInfoToolTipOpen(true);
-      })
+      });
   }
 
   // Handle login submit
   function handleLoginSubmit(email, password) {
-    auth.login(email, password)
+    auth
+      .login(email, password)
       .then((res) => {
-        localStorage.setItem('jwt', res.token);
-        setCurrentUser({ ...currentUser, res });
+        localStorage.setItem("jwt", res.token);
+        setCurrentUser({ ...currentUser, email });
         setLoggedIn(true);
         setTipStatus(true);
-        navigate('/');
+        navigate("/");
         console.log(`Logged in successfully!`, res, currentUser);
       })
       .catch((err) => {
         if (err.status === 400) {
-          console.log('400 - one or more of the fields were not provided');
+          console.log("400 - one or more of the fields were not provided");
         }
         if (err.status === 401) {
-          console.log('401 - the user with the specified email not found');
+          console.log("401 - the user with the specified email not found");
         } else {
           console.log(`Something is not working... Error: ${err}`);
         }
         setTipStatus(false);
         setIsInfoToolTipOpen(true);
-      })
+      });
   }
 
   // Handle sign out
   function handleSignOut() {
-    localStorage.removeItem('jwt');
+    localStorage.removeItem("jwt");
     setLoggedIn(false);
-    navigate('/signin');
+    setCurrentUser({});
+    navigate("/signin");
     console.log(`Logged out successfully!`);
   }
 
   // Mounting path check
   React.useEffect(() => {
-    if (location.pathname === '/signup') {
-      setHeaderStatus('signup')
+    if (location.pathname === "/signup") {
+      setHeaderStatus("signup");
     }
-    if (location.pathname === '/signin') {
-      setHeaderStatus('signin')
+    if (location.pathname === "/signin") {
+      setHeaderStatus("signin");
     } else {
-      setHeaderStatus('main')
+      setHeaderStatus("main");
     }
   }, [location.pathname]);
 
   // Mounting token check
   React.useEffect(() => {
-    const jwt = localStorage.getItem('jwt');
-
-    if (jwt) {
-      console.log('this is jwt: ', jwt)
-      auth.getToken(jwt)
+    const jwt = localStorage.getItem("jwt");
+    !loggedIn &&
+      jwt &&
+      //console.log("this is jwt: ", jwt);
+      auth
+        .getToken(jwt)
         .then((res) => {
-          console.log('this is res: ', res.data)
-          if (res) {
-            setCurrentUser({ ...currentUser, email: res.data.email, _id: res.data._id });
-            setLoggedIn(true);
-            navigate('/');
-            console.log('current user: ', currentUser)
-          }
+          setCurrentUser(res.data);
+          setLoggedIn(true);
+          navigate("/");
         })
-        // .then((data) => {
-        //   setLoggedIn(true);
-        //   navigate('/');
-        //   console.log('current user: ', currentUser)
-        //   console.log('userData from currentUser: ', currentUser.userData)
-        // })
         .catch((err) => {
-          setTipStatus(false);
-          setIsInfoToolTipOpen(true);
-          console.log('Something is not working...');
+          console.log(err);
+        });
+  }, []);
+  React.useEffect(() => {
+    loggedIn &&
+      api.getUserInfo()
+        .then(userData => {
+          //user
+          setCurrentUser({ ...currentUser, ...userData });
         })
-    }
-  }, [loggedIn]);
-
+        .catch(err => console.log(err));
+    console.log(currentUser);
+  }, [loggedIn])
   // Mounting cards and user
   React.useEffect(() => {
     // Get user and cards data
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([userData, cardsData]) => {
-        // User
-        setCurrentUser({ ...currentUser, userData });
-        // Cards
-        setCards(cardsData);
-      })
-      .catch((err) => console.log(err));
+    loggedIn &&
+      api.getInitialCards()
+        .then((cardsData) => {
+          // Cards
+          setCards(cardsData);
+        })
+        .catch((err) => console.log(err));
+  }, [loggedIn]);
 
+  React.useEffect(() => {
     // Escape button event listeners
     const closeByEscape = (evt) => {
       if (evt.key === "Escape") {
@@ -277,8 +281,7 @@ function App() {
     document.addEventListener("keydown", closeByEscape);
     // Remove
     return () => document.removeEventListener("keydown", closeByEscape);
-  }, [loggedIn]);
-
+  });
   // JSX
   return (
     <div className="page">
@@ -291,7 +294,8 @@ function App() {
         />
         <Routes>
           <Route
-            exact path="/"
+            exact
+            path="/"
             loggedIn={loggedIn}
             element={
               <ProtectedRoute loggedIn={loggedIn}>
@@ -309,7 +313,8 @@ function App() {
                   onCardDelete={handleCardDelete}
                 />
               </ProtectedRoute>
-            } />
+            }
+          />
           <Route
             path="/signup"
             element={<Register handleRegister={handleRegisterSubmit} />}
@@ -349,7 +354,7 @@ function App() {
           handleSubmit={deleteCard}
         />
 
-        <InfoToolTip
+        <InfoTooltip
           onClose={closeAllPopups}
           isOpen={isInfoToolTipOpen}
           tipStatus={tipStatus}
@@ -359,7 +364,7 @@ function App() {
           failedTipIcon={failedTipIcon}
         />
 
-        {/* <InfoToolTip /> */}
+        {/* <InfoTooltip /> */}
 
         <ImagePopup
           isOpen={isImagePopupOpen}
