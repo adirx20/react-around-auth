@@ -236,17 +236,17 @@ function App() {
           console.log('this is res: ', res.data)
           if (res) {
             setCurrentUser({ ...currentUser, email: res.data.email, _id: res.data._id });
-            // setLoggedIn(true);
-            // navigate('/');
-            // console.log('current user: ', currentUser)
+            setLoggedIn(true);
+            navigate('/');
+            console.log('current user: ', currentUser)
           }
         })
-        .then((data) => {
-          setLoggedIn(true);
-          navigate('/');
-          console.log('current user: ', currentUser)
-          console.log('userData from currentUser: ', currentUser.userData)
-        })
+        // .then((data) => {
+        //   setLoggedIn(true);
+        //   navigate('/');
+        //   console.log('current user: ', currentUser)
+        //   console.log('userData from currentUser: ', currentUser.userData)
+        // })
         .catch((err) => {
           setTipStatus(false);
           setIsInfoToolTipOpen(true);
