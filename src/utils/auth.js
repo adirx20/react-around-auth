@@ -9,7 +9,7 @@ export const register = (email, password) => {
         },
         body: JSON.stringify({ email, password }),
     })
-        .then(res => checkResponce(res));
+        .then(res => checkResponse(res));
 };
 
 export const login = (email, password) => {
@@ -21,7 +21,7 @@ export const login = (email, password) => {
         },
         body: JSON.stringify({ email, password }),
     })
-        .then(res => checkResponce(res));
+        .then(res => checkResponse(res));
 };
 
 export const getToken = (token) => {
@@ -33,10 +33,10 @@ export const getToken = (token) => {
             'Authorization': `Bearer ${token}`,
         },
     })
-        .then(res => checkResponce(res));
+        .then(res => checkResponse(res));
 }
 
-function checkResponce(res) {
+function checkResponse(res) {
     if (res.ok) {
         return res.json();
     }
