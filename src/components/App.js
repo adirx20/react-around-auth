@@ -4,7 +4,7 @@ import "../index.css";
 import logo from "../images/header-logo.svg";
 import successTipIcon from "../images/auth-icon-success.svg";
 import failedTipIcon from "../images/auth-icon-failed.svg";
-import { api, userApi } from "../utils/api";
+import api from "../utils/api";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import Header from "./Header";
 import Main from "./Main";
@@ -100,7 +100,7 @@ function App() {
 
   // Handle update user
   function handleUpdateUser(userData) {
-    userApi
+    api
       .editProfile(userData)
       .then((res) => {
         console.log(res);

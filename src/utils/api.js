@@ -83,18 +83,18 @@ class Api {
 }
 
 // Regular api (cards api)
-const api = new Api({
-  baseUrl: "https://around.nomoreparties.co/v1/group-12",
-  headers: {
-    authorization: "7d25a2aa-7d8e-4eaa-a0f4-d0c8a249fbe0",
-    "Content-Type": "application/json"
-  }
-});
+// const api = new Api({
+//   baseUrl: "https://around.nomoreparties.co/v1/group-12",
+//   headers: {
+//     authorization: "7d25a2aa-7d8e-4eaa-a0f4-d0c8a249fbe0",
+//     "Content-Type": "application/json"
+//   }
+// });
 
 // New api (user api)
 const jwt = localStorage.getItem('jwt');
 
-const userApi = new Api({
+const api = new Api({
   baseUrl: 'https://api.around-express.students.nomoredomainssbs.ru',
   headers: {
     Accept: 'application/json',
@@ -105,9 +105,6 @@ const userApi = new Api({
 });
 // <=====
 
-export {
-  api,
-  userApi,
-};
+export default api;
 
   // Token: 7d25a2aa-7d8e-4eaa-a0f4-d0c8a249fbe0 Group ID: group-12
