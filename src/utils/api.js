@@ -95,7 +95,7 @@ class Api {
 const jwt = localStorage.getItem('jwt');
 
 const api = new Api({
-  baseUrl: 'https://api.around-express.students.nomoredomainssbs.ru',
+  baseUrl: 'http://localhost:3001',
   headers: {
     Accept: 'application/json',
     Origin: 'http://around-express.students.nomoredomainssbs.ru',
