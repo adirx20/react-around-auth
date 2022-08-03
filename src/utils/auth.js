@@ -1,4 +1,6 @@
-export const BASE_URL = 'http://localhost:3002';export const register = (email, password) => {
+export const BASE_URL = 'http://api.around-express.students.nomoredomainssbs.ru';
+
+export const register = (email, password) => {
     return fetch(`${BASE_URL}/users/signup`, {
         method: 'POST',
         headers: {
@@ -7,7 +9,7 @@ export const BASE_URL = 'http://localhost:3002';export const register = (email, 
         },
         body: JSON.stringify({ email, password }),
     })
-        .then((res) => checkResponse(res))
+        .then((res) => {checkResponse(res); console.log('auth log: ', res)})
         .catch((err) => console.log(err));
 };
 

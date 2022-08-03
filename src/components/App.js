@@ -165,6 +165,7 @@ function App() {
     function handleRegisterSubmit(email, password) {
         auth.register(email, password)
             .then((res) => {
+                console.log('register log: ', res)
                 setTipStatus(true);
                 setIsInfoToolTipOpen(true);
                 navigate('/signin');
