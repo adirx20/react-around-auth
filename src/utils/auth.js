@@ -1,4 +1,5 @@
 export const BASE_URL = 'http://api.around-express.students.nomoredomainssbs.ru';
+// export const BASE_URL = 'http://localhost:3002';
 
 export const register = (email, password) => {
     return fetch(`${BASE_URL}/users/signup`, {
