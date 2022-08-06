@@ -152,6 +152,7 @@ function App() {
 
     // Handle add card submit
     function handleAddCardSubmit(cardData) {
+        console.log(cardData);
         api.createCard(cardData)
             .then((newCard) => {
                 console.log('new carda', newCard);
