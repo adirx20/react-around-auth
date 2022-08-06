@@ -154,7 +154,7 @@ function App() {
     function handleAddCardSubmit(cardData) {
         api.createCard(cardData)
             .then((newCard) => {
-                console.log('new card', newCard);
+                console.log('new carda', newCard);
                 setCards([newCard, ...cards]);
                 closeAllPopups();
             })
