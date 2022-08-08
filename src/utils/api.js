@@ -41,13 +41,13 @@ class Api {
         });
     }
 
-    createCard(data) {
+    createCard(cardData) {
         return customFetch(`${this._baseUrl}/cards`, {
             headers: this._headers,
             method: 'POST',
             body: JSON.stringify({
-                name: data.name,
-                link: data.link,
+                name: cardData.name,
+                link: cardData.link,
             }),
         });
     }
@@ -80,15 +80,6 @@ class Api {
         });
     }
 }
-
-// Regular api (cards api)
-// const api = new Api({
-//   baseUrl: "https://around.nomoreparties.co/v1/group-12",
-//   headers: {
-//     authorization: "7d25a2aa-7d8e-4eaa-a0f4-d0c8a249fbe0",
-//     "Content-Type": "application/json"
-//   }
-// });
 
 // New api (user api)
 const jwt = localStorage.getItem('jwt');

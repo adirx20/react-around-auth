@@ -153,18 +153,23 @@ function App() {
     // Handle add card submit
     function handleAddCardSubmit(cardData) {
         console.log(cardData);
-        api.createCard(cardData)
+        api
+            .createCard(cardData)
             .then((newCard) => {
                 console.log('new carda', newCard);
                 setCards([newCard, ...cards]);
                 closeAllPopups();
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                console.log('card submit error: ', err);
+                console.log('card data: ', cardData);
+            });
     }
 
     // Handle register submit
     function handleRegisterSubmit(email, password) {
-        auth.register(email, password)
+        auth
+            .register(email, password)
             .then((res) => {
                 console.log('register log: ', res)
                 setTipStatus(true);
@@ -186,7 +191,8 @@ function App() {
 
     // Handle login submit
     function handleLoginSubmit(email, password) {
-        auth.login(email, password)
+        auth
+            .login(email, password)
             .then((res) => {
                 localStorage.setItem('jwt', res.token);
                 setCurrentUser({ ...currentUser, email });
