@@ -51,6 +51,7 @@ class Api {
     };
 
     createCard(cardData) {
+        console.log(`card name: ${cardData.name} \n card link: ${cardData.link}`)
         return customFetch(`${this._baseUrl}/cards`, {
             headers: this._generateHeaders(),
             method: 'POST',
@@ -91,8 +92,8 @@ class Api {
 };
 
 const api = new Api({
-    // baseUrl: 'http://localhost:3002'
-    baseUrl: 'https://api.around-express.students.nomoredomainssbs.ru'
+    // baseUrl: 'http://localhost:3004',
+    baseUrl: 'https://api.around-express.students.nomoredomainssbs.ru',
     // headers: this._generateHeaders,
 });
 

@@ -269,12 +269,14 @@ function App() {
     }, [loggedIn]);
     // Mounting cards and user
     React.useEffect(() => {
+        console.log(`logged in: ${loggedIn}`)
         // Get user and cards data
         loggedIn &&
             api
                 .getInitialCards()
                 .then((cardsData) => {
                     // Cards
+                    console.log('cards data from effect: ', cardsData)
                     setCards(cardsData);
                 })
                 .catch((err) => console.log(err));
