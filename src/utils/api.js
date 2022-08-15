@@ -92,8 +92,8 @@ class Api {
 };
 
 const api = new Api({
-    baseUrl: 'http://localhost:3001',
-    // baseUrl: 'https://api.around-express.students.nomoredomainssbs.ru',
+    // baseUrl: 'http://localhost:3001',
+    baseUrl: 'https://api.around-express.students.nomoredomainssbs.ru',
     // headers: this._generateHeaders,
 });
 

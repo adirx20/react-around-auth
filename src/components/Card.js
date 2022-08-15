@@ -5,7 +5,7 @@ import CurrentUserContext from '../contexts/CurrentUserContext';
 function Card(props) {
     // CURRENT USER CONTEXT
     const currentUser = React.useContext(CurrentUserContext);
-    const isOwn = props.card.owner._id === currentUser._id;
+    const isOwn = props.card.owner === currentUser._id;
 
     // STYLE
     const imageStyle = {
