@@ -92,24 +92,9 @@ class Api {
 };
 
 const api = new Api({
-    baseUrl: 'http://localhost:3001',
-    // baseUrl: 'https://api.around-express.students.nomoredomainssbs.ru',
-    // headers: this._generateHeaders,
+    // baseUrl: 'http://localhost:3001',
+    baseUrl: 'https://api.around-express.students.nomoredomainssbs.ru',
 });
-
-// New api (user api)
-// const jwt = localStorage.getItem('jwt');
-
-// const api = new Api({
-//     // baseUrl: 'https://api.around-express.students.nomoredomainssbs.ru',
-//     baseUrl: 'http://localhost:3002',
-//     headers: {
-//         Accept: 'application/json',
-//         Origin: 'http://around-express.students.nomoredomainssbs.ru',
-//         authorization: `Bearer ${jwt}`,
-//         'Content-Type': 'application/json',
-//     },
-// });
 // <=====
 
 export default api;
